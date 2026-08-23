@@ -1,22 +1,22 @@
-const express = require('express');
+const app = require('./app/app')
 const dotenv = require('dotenv');
-const { GoogleGenerativeAi } = require('@google/generative-ai');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 dotenv.config();
 
-const app = express();
-app.use(express.json());
-
-const genAi = new GoogleGenerativeAi(process.env.AI_API_KEY)
-
+const genAi = new GoogleGenerativeAI(process.env.AI_API_KEY);
 const model = genAi.getGenerativeModel({
-    model : "gemini-2.5-flash"
+    model: "gemini-3.6-flash"
 });
+console.log('request sent to ai')
 
 app.post('/api/mentor', async (req,res) => {
     try{
         const { message } = req.body;
-        if(!message) res.status(400).json({message: "Message is required"});
+        if(!message) {
+            res.status(400).json({message: "Message is required"});
+            return;
+        }
 
         const result = await model.generateContent(message);
         const response = result.response.text();
@@ -24,7 +24,7 @@ app.post('/api/mentor', async (req,res) => {
         res.json({
             response
         })
-
+        console.log('response sent from ai')
     } catch(error){
         console.log("error in the server" , error);
         res.status(500).json({
