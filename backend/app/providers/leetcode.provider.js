@@ -199,9 +199,8 @@ const getProblemDetails = async (titleSlug) => {
 // return complete problem
 // ======================================================
 
-const getProblem = async () => {
+const getProblem = async (problemNumber) => {
     // STEP 1
-    const problemNumber = req.params.problemnumber;
     const basicProblem = await findProblemByNumber(problemNumber);
     console.log(
         "Problem found:",
