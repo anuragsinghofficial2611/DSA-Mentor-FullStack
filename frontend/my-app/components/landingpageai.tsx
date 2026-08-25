@@ -55,47 +55,35 @@ export default function AIChatPage() {
     setInput("");
     setIsTyping(true);
 
-    try{
-        setLoading(true);
-        const response = await fetch("http://localhost:5000/api/ai/chat", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                message: text,
-            }),
-        });
-        
-        const data = await response.json();
-        console.log(data);
-        setMessages((prev) => [
-            ...prev,
-            {
-                id: Date.now(),
-                role: "assistant",
-                content: data.response,
-            },
-        ]);
-    } catch(error){
-        console.log(error)
-    } finally{
-        setLoading(false);
-        setIsTyping(false)
+    try {
+      setLoading(true);
+      const response = await fetch("http://localhost:5000/api/ai/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: text,
+        }),
+      });
+
+      const data = await response.json();
+      console.log(data);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: Date.now(),
+          role: "assistant",
+          content: data,
+        },
+      ]);
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setLoading(false);
+      setIsTyping(false)
     }
 
-    // // Temporary AI response
-    // setTimeout(() => {
-    //   const aiMessage: Message = {
-    //     id: Date.now() + 1,
-    //     role: "assistant",
-    //     content:
-    //       "I received your message. Connect this function to your backend AI API to generate real responses.",
-    //   };
-
-    //   setMessages((prev) => [...prev, aiMessage]);
-    //   setIsTyping(false);
-    // }, 1200);
   };
 
   const handleKeyDown = (
@@ -124,8 +112,7 @@ export default function AIChatPage() {
       {/* ================= SIDEBAR ================= */}
       <aside
         className={`
-          ${
-            sidebarOpen ? "w-[270px]" : "w-0"
+          ${sidebarOpen ? "w-[270px]" : "w-0"
           }
           shrink-0 overflow-hidden border-r border-white/10
           bg-[#0b101c] transition-all duration-300
@@ -258,10 +245,9 @@ export default function AIChatPage() {
                 key={message.id}
                 className={`
                   mb-8 flex gap-4
-                  ${
-                    message.role === "user"
-                      ? "justify-end"
-                      : "justify-start"
+                  ${message.role === "user"
+                    ? "justify-end"
+                    : "justify-start"
                   }
                 `}
               >
@@ -283,30 +269,51 @@ export default function AIChatPage() {
                 <div
                   className={`
                     max-w-[80%]
-                    ${
-                      message.role === "user"
-                        ? "rounded-2xl rounded-tr-sm bg-blue-600 px-4 py-3"
-                        : "rounded-2xl rounded-tl-sm border border-white/10 bg-[#101724] px-4 py-3"
+                    ${message.role === "user"
+                      ? "rounded-2xl rounded-tr-sm bg-blue-600 px-4 py-3"
+                      : "rounded-2xl rounded-tl-sm border border-white/10 bg-[#101724] px-4 py-3"
                     }
                   `}
                 >
-                  <p className="whitespace-pre-wrap text-sm leading-7 text-gray-100">
-                    {message.content}
-                  </p>
+                  {(message?.role === "user") ? <p>{message?.content}</p> :
+                    <div className="flex flex-col gap-5">
+
+                      <div className="">
+                        <p>Hint</p>
+                        <div className="whitespace-pre-wrap text-sm leading-7 text-gray-100">{message.content.response?.hint} </div>
+                      </div>
+                      <div className="">
+                        <p>Explanation</p>
+                        <div className="whitespace-pre-wrap text-sm leading-7 text-gray-100">{message.content.response?.explanation} </div>
+                      </div>
+                      <div className="">
+                        <p>Answer</p>
+                        <p className="whitespace-pre-wrap text-sm leading-7 text-gray-100">
+                          {message.content.response?.answer}
+                        </p>
+                      </div>
+                      <div className="">
+                        <p>Code</p>
+                        <div className="whitespace-pre-wrap text-sm leading-7 text-gray-100">{message.content.response?.code} </div>
+                      </div>
+                    </div>
+                  }
                 </div>
 
                 {/* User Avatar */}
-                {message.role === "user" && (
-                  <div
-                    className="
-                      flex h-9 w-9 shrink-0 items-center
-                      justify-center rounded-xl
-                      bg-white/10
+                {
+                  message.role === "user" && (
+                    <div
+                      className="
+                    flex h-9 w-9 shrink-0 items-center
+                    justify-center rounded-xl
+                    bg-white/10
                     "
-                  >
-                    <User size={18} />
-                  </div>
-                )}
+                    >
+                      <User size={18} />
+                    </div>
+                  )
+                }
               </div>
             ))}
 
@@ -401,7 +408,7 @@ export default function AIChatPage() {
             </p>
           </div>
         </div>
-      </main>
-    </div>
+      </main >
+    </div >
   );
 }
