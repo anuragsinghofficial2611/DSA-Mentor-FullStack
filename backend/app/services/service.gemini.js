@@ -1,6 +1,6 @@
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
-const genAi = new GoogleGenerativeAI(process.env.AI_API_KEY);
+const genAi = new GoogleGenerativeAI(process.env.GEMINIAI_API_KEY);
 const model = genAi.getGenerativeModel({
     model: "gemini-3.6-flash",
     systemInstruction: `    
@@ -46,7 +46,7 @@ generationConfig: {
             },
             code: {
                 type: "STRING",
-                description: "java code if code is appropriate, otherwise an empty string",
+                    description: "Java code formatted with proper newline characters and indentation. Never return the code on a single line.",
             },
             timeComplexity:{
                 type: "String",
