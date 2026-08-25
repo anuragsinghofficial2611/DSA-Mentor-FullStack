@@ -1,4 +1,6 @@
 const app = require('./app/app')
+const {connectDB} = require('./app/configs/db.js');
+connectDB();
 // const dotenv = require('dotenv');
 // const { GoogleGenerativeAI } = require('@google/generative-ai');
 
