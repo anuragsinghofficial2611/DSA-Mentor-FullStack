@@ -16,8 +16,10 @@ type Message = {
   role: "user" | "assistant";
   content: string;
 };
+import { useRouter } from 'next/navigation';
 
 export default function AIChatPage() {
+  const router = useRouter();
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
@@ -105,6 +107,23 @@ export default function AIChatPage() {
       },
     ]);
   };
+  useEffect(() => {
+    getUser();
+  },[])
+
+  const getUser = async() => {
+    try{
+      const response = await fetch('/api/user/getuser');
+      const data = await response.json();
+      if(!response.ok) {
+        router.push('/auth/login')
+        console.log("response is not ok",data);
+      }
+      console.log(data);
+    } catch(error){
+      console.log(error);
+    }
+  }
 
   return (
     <div className="flex h-screen w-full overflow-hidden bg-[#070b14] text-white">
