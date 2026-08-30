@@ -373,7 +373,7 @@ This makes the application easier to extend and experiment with different models
 
 ## Frontend
 
-* React
+* NEXTJS
 * JavaScript
 * HTML
 * CSS

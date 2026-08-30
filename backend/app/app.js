@@ -7,7 +7,7 @@ const chat = require('./routes/chats.route.js');
 app.use(cors())
 require('dotenv').config();
 app.use(express.json());
-
+    
 const problemRouter = require('./routes/getproblem.js');
 const AiRouter = require('./routes/gemini.route.js')
 
