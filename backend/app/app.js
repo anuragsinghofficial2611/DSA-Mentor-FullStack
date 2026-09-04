@@ -4,6 +4,7 @@ const cors = require('cors');
 const auth = require('./routes/auth.route.js');
 const chat = require('./routes/chats.route.js');
 const user = require('./routes/user.route.js');
+const errorhandler = require('./middlewares/error.middleware.js');
 
 app.use(cors())
 require('dotenv').config();
@@ -17,5 +18,7 @@ app.use(`/getproblem/`,problemRouter);
 app.use('/api/ai',AiRouter);
 app.use('/chat/',chat)
 app.use('/user/',user);
+
+app.use(errorhandler);
 
 module.exports = app;
